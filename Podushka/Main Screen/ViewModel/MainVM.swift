@@ -12,16 +12,16 @@ import Combine
 /**
  Main screen View Model implementation.
  */
-final class MainVM: MainViewModel{
+final class MainVM: MainViewModel {
     
     var sleepTimerDuration: TimeInterval = 0
     var alarmDate: Date = Date().advanced(by: 10 * 60)
     
     // MARK: Dependencies
-    private let dependencyManager: DependencyManager
+    private let audioPlayer: AudioPlayerService
 
-    init(dependencyManager: DependencyManager) {
-        self.dependencyManager = dependencyManager
+    init(audioPlayer: AudioPlayerService) {
+        self.audioPlayer = audioPlayer
     }
 
     private let stateSubject = CurrentValueSubject<MainState, Never>(.idle)
@@ -29,4 +29,19 @@ final class MainVM: MainViewModel{
         stateSubject.eraseToAnyPublisher()
     }
     
+    func togglePlaying() {
+        switch stateSubject.value {
+        case .idle:
+            audioPlayer.play(audio: .nature)
+            stateSubject.send(.playing)
+        case .playing:
+            audioPlayer.pause()
+            stateSubject.send(.paused)
+        case .paused:
+            audioPlayer.resume()
+            stateSubject.send(.playing)
+        default:
+            break
+        }
+    }
 }

@@ -21,6 +21,10 @@
 		82D6D5632466C0AC009EFF01 /* ObserverContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82D6D5622466C0AC009EFF01 /* ObserverContainer.swift */; };
 		82D6D5662466C50A009EFF01 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82D6D5652466C50A009EFF01 /* MainViewModel.swift */; };
 		82D6D5682466C517009EFF01 /* MainVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82D6D5672466C517009EFF01 /* MainVM.swift */; };
+		82D6D56B2466CCFB009EFF01 /* AudioPlayerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82D6D56A2466CCFB009EFF01 /* AudioPlayerService.swift */; };
+		82D6D56D2466CD19009EFF01 /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82D6D56C2466CD19009EFF01 /* AudioPlayer.swift */; };
+		82D6D5712466CD8C009EFF01 /* nature.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 82D6D56F2466CD8C009EFF01 /* nature.m4a */; };
+		82D6D5722466CD8C009EFF01 /* alarm.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 82D6D5702466CD8C009EFF01 /* alarm.m4a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +56,10 @@
 		82D6D5622466C0AC009EFF01 /* ObserverContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObserverContainer.swift; sourceTree = "<group>"; };
 		82D6D5652466C50A009EFF01 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		82D6D5672466C517009EFF01 /* MainVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVM.swift; sourceTree = "<group>"; };
+		82D6D56A2466CCFB009EFF01 /* AudioPlayerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerService.swift; sourceTree = "<group>"; };
+		82D6D56C2466CD19009EFF01 /* AudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
+		82D6D56F2466CD8C009EFF01 /* nature.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = nature.m4a; sourceTree = "<group>"; };
+		82D6D5702466CD8C009EFF01 /* alarm.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = alarm.m4a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,6 +160,7 @@
 		82D6D5592466BFEE009EFF01 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				82D6D5692466CCD3009EFF01 /* Audio Player */,
 				82D6D5612466C076009EFF01 /* Observer Container */,
 				82D6D55A2466BFFE009EFF01 /* Dependency Injection */,
 			);
@@ -182,6 +191,25 @@
 				82D6D5672466C517009EFF01 /* MainVM.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		82D6D5692466CCD3009EFF01 /* Audio Player */ = {
+			isa = PBXGroup;
+			children = (
+				82D6D56E2466CD66009EFF01 /* Audio Files */,
+				82D6D56A2466CCFB009EFF01 /* AudioPlayerService.swift */,
+				82D6D56C2466CD19009EFF01 /* AudioPlayer.swift */,
+			);
+			path = "Audio Player";
+			sourceTree = "<group>";
+		};
+		82D6D56E2466CD66009EFF01 /* Audio Files */ = {
+			isa = PBXGroup;
+			children = (
+				82D6D5702466CD8C009EFF01 /* alarm.m4a */,
+				82D6D56F2466CD8C009EFF01 /* nature.m4a */,
+			);
+			path = "Audio Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -265,7 +293,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				82D6D5712466CD8C009EFF01 /* nature.m4a in Resources */,
 				82D6D53924666E39009EFF01 /* LaunchScreen.storyboard in Resources */,
+				82D6D5722466CD8C009EFF01 /* alarm.m4a in Resources */,
 				82D6D55424669BB2009EFF01 /* AlarmDatePicker.xib in Resources */,
 				82D6D53624666E39009EFF01 /* Assets.xcassets in Resources */,
 				82D6D53424666E37009EFF01 /* Main.storyboard in Resources */,
@@ -288,6 +318,7 @@
 			files = (
 				82D6D55F2466C046009EFF01 /* DependencyContainer.swift in Sources */,
 				82D6D5682466C517009EFF01 /* MainVM.swift in Sources */,
+				82D6D56D2466CD19009EFF01 /* AudioPlayer.swift in Sources */,
 				82D6D5572466A0C1009EFF01 /* UIViewExtension.swift in Sources */,
 				82D6D53124666E37009EFF01 /* MainVC.swift in Sources */,
 				82D6D55224669910009EFF01 /* AlarmDatePicker.swift in Sources */,
@@ -295,6 +326,7 @@
 				82D6D5632466C0AC009EFF01 /* ObserverContainer.swift in Sources */,
 				82D6D55E2466C046009EFF01 /* DependencyManager.swift in Sources */,
 				82D6D5662466C50A009EFF01 /* MainViewModel.swift in Sources */,
+				82D6D56B2466CCFB009EFF01 /* AudioPlayerService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

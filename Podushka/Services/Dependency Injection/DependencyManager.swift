@@ -59,10 +59,14 @@ final public class DependencyManager {
     private func setupNormalContainer() {
         
         // MARK: Services
-        
+        container.register { _ in
+            AudioPlayer() as AudioPlayerService
+        }
+
         // MARK: ViewModels
         container.register { container -> MainViewModel in
-            return MainVM(dependencyManager: self)
+            let audioPlayer: AudioPlayerService = try! container.resolve()
+            return MainVM(audioPlayer: audioPlayer)
         }
         
         observers.enumerateObservers { (observer) in
