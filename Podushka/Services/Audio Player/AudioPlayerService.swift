@@ -7,10 +7,18 @@
 //
 
 import Foundation
+import Combine
 
 enum AudioFile: String {
     case nature = "nature.m4a"
     case alarm = "alarm.m4a"
+}
+
+enum InterruptionEvent {
+    case began
+    case endedWithResume
+    case endedWithoutResume
+    case unexpected
 }
 
 protocol AudioPlayerService {
@@ -24,4 +32,6 @@ protocol AudioPlayerService {
     /// Stops playing current audio file.
     func stop()
     
+    /// Returns a publisher that emits events when interruption notifications occur.
+    func interruptionPublisher() -> AnyPublisher<InterruptionEvent, Never>
 }

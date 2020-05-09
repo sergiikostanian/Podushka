@@ -20,11 +20,17 @@ final class MainVM: MainViewModel {
     // MARK: Dependencies
     private let audioPlayer: AudioPlayerService
 
+    private let stateSubject = CurrentValueSubject<MainState, Never>(.idle)
+    private var subscribers = Set<AnyCancellable>()
+
     init(audioPlayer: AudioPlayerService) {
         self.audioPlayer = audioPlayer
+        
+        self.audioPlayer.interruptionPublisher().sink { [weak self] (event) in
+            self?.hanleAudioInterruption(with: event)
+        }.store(in: &subscribers)
     }
 
-    private let stateSubject = CurrentValueSubject<MainState, Never>(.idle)
     func statePublisher() -> AnyPublisher<MainState, Never> {
         stateSubject.eraseToAnyPublisher()
     }
@@ -40,6 +46,27 @@ final class MainVM: MainViewModel {
         case .paused:
             audioPlayer.resume()
             stateSubject.send(.playing)
+        default:
+            break
+        }
+    }
+}
+
+extension MainVM {
+    
+    private func hanleAudioInterruption(with event: InterruptionEvent) {
+        print(event)
+        switch event {
+        case .began:
+            if stateSubject.value == .playing {
+                print("PAUSED")
+                stateSubject.send(.paused)
+            }
+        case .endedWithResume:
+            if stateSubject.value == .paused {
+                print("PLAYING")
+                stateSubject.send(.playing)
+            }
         default:
             break
         }
