@@ -14,7 +14,7 @@ import Combine
  */
 final class MainVM: MainViewModel {
     
-    var sleepTimerDuration: TimeInterval = 0
+    var sleepTimerDuration: TimeInterval = 60
     var alarmDate: Date = Date().advanced(by: 10 * 60)
     
     // MARK: Dependencies
@@ -22,6 +22,7 @@ final class MainVM: MainViewModel {
 
     private let stateSubject = CurrentValueSubject<MainState, Never>(.idle)
     private var subscribers = Set<AnyCancellable>()
+    private var playingTimer = PauseableTimer()
 
     init(audioPlayer: AudioPlayerService) {
         self.audioPlayer = audioPlayer
@@ -38,15 +39,27 @@ final class MainVM: MainViewModel {
     func togglePlaying() {
         switch stateSubject.value {
         case .idle:
+            playingTimer.schedule(with: sleepTimerDuration) { [weak self] in
+                self?.audioPlayer.stop()
+                self?.stateSubject.send(.idle)
+            }
             audioPlayer.play(audio: .nature)
             stateSubject.send(.playing)
+            
         case .playing:
+            playingTimer.pause()
             audioPlayer.pause()
             stateSubject.send(.paused)
+            
         case .paused:
+            playingTimer.resume()
             audioPlayer.resume()
             stateSubject.send(.playing)
-        default:
+            
+        case .recording:
+            break
+            
+        case .alarm:
             break
         }
     }
@@ -55,20 +68,16 @@ final class MainVM: MainViewModel {
 extension MainVM {
     
     private func hanleAudioInterruption(with event: InterruptionEvent) {
-        print(event)
         switch event {
         case .began:
             if stateSubject.value == .playing {
-                print("PAUSED")
                 stateSubject.send(.paused)
             }
         case .endedWithResume:
             if stateSubject.value == .paused {
-                print("PLAYING")
                 stateSubject.send(.playing)
             }
-        default:
-            break
+        default: break
         }
     }
 }

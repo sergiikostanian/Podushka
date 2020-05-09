@@ -31,6 +31,7 @@ final class MainVC: UIViewController {
 
     // MARK: - Actions
     @IBAction private func sleepTimerViewTapped(_ sender: UITapGestureRecognizer) {
+        guard state == .idle else { return }
         selectSleepTimerValue { [weak self] value in
             guard let value = value else { return }
             self?.viewModel.sleepTimerDuration = TimeInterval(value * 60)
@@ -38,6 +39,7 @@ final class MainVC: UIViewController {
     }
     
     @IBAction private func alarmViewTapped(_ sender: UITapGestureRecognizer) {
+        guard state == .idle else { return }
         alarmDatePicker.present(in: view) { [weak self] result in
             switch result {
             case .done(let date):
@@ -59,7 +61,7 @@ final class MainVC: UIViewController {
         
         switch newState {
         case .idle:
-            break
+            playPauseButton.setTitle("Play", for: .normal)
         case .playing:
             playPauseButton.setTitle("Pause", for: .normal)
         case .paused:
@@ -76,6 +78,7 @@ final class MainVC: UIViewController {
         availableSleepTimerValues.forEach({ (value) in
             let title = value > 0 ? "\(value) min" : "off"
             alert.addAction(UIAlertAction(title: title, style: .default) { _ in
+                self.sleepTimerValueLabel.text = title
                 completion(value)
             })
         })
