@@ -9,7 +9,7 @@
 import Foundation
 import Combine
 
-enum MainState {
+enum MainState: String {
     case idle
     case playing
     case recording

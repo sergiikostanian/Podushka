@@ -25,7 +25,9 @@ final class MainVC: UIViewController {
     
     private let availableSleepTimerValues = [0, 1, 3, 5, 10, 15]
     private var subscribers = Set<AnyCancellable>()
-    private var state: MainState = .idle
+    private var state: MainState = .idle {
+        didSet { didSetState(state) }
+    }
 
     // MARK: - Actions
     @IBAction private func sleepTimerViewTapped(_ sender: UITapGestureRecognizer) {
@@ -48,6 +50,23 @@ final class MainVC: UIViewController {
     
     @IBAction private func playPauseButtonTapped(_ sender: UIButton) {
         viewModel.togglePlaying()
+    }
+    
+    func didSetState(_ newState: MainState) {
+        guard isViewLoaded else { return }
+        
+        stateLabel.text = newState.rawValue.capitalized
+        
+        switch newState {
+        case .idle:
+            break
+        case .playing:
+            playPauseButton.setTitle("Pause", for: .normal)
+        case .paused:
+            playPauseButton.setTitle("Play", for: .normal)
+        default:
+            break
+        }
     }
     
     // MARK: - Helpers
