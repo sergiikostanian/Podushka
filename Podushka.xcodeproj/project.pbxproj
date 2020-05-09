@@ -17,6 +17,9 @@
 		82D6D55224669910009EFF01 /* AlarmDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82D6D5512466990F009EFF01 /* AlarmDatePicker.swift */; };
 		82D6D55424669BB2009EFF01 /* AlarmDatePicker.xib in Resources */ = {isa = PBXBuildFile; fileRef = 82D6D55324669BB2009EFF01 /* AlarmDatePicker.xib */; };
 		82D6D5572466A0C1009EFF01 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82D6D5562466A0C1009EFF01 /* UIViewExtension.swift */; };
+		82D6D55E2466C046009EFF01 /* DependencyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82D6D55B2466C046009EFF01 /* DependencyManager.swift */; };
+		82D6D55F2466C046009EFF01 /* DependencyContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82D6D55C2466C046009EFF01 /* DependencyContainer.swift */; };
+		82D6D5632466C0AC009EFF01 /* ObserverContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82D6D5622466C0AC009EFF01 /* ObserverContainer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +47,9 @@
 		82D6D5512466990F009EFF01 /* AlarmDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmDatePicker.swift; sourceTree = "<group>"; };
 		82D6D55324669BB2009EFF01 /* AlarmDatePicker.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AlarmDatePicker.xib; sourceTree = "<group>"; };
 		82D6D5562466A0C1009EFF01 /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
+		82D6D55B2466C046009EFF01 /* DependencyManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DependencyManager.swift; sourceTree = "<group>"; };
+		82D6D55C2466C046009EFF01 /* DependencyContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DependencyContainer.swift; sourceTree = "<group>"; };
+		82D6D5622466C0AC009EFF01 /* ObserverContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObserverContainer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +91,7 @@
 		82D6D52B24666E37009EFF01 /* Podushka */ = {
 			isa = PBXGroup;
 			children = (
+				82D6D5592466BFEE009EFF01 /* Services */,
 				82D6D5552466A0A9009EFF01 /* Helpers */,
 				82D6D54E24667942009EFF01 /* Main Screen */,
 				82D6D52C24666E37009EFF01 /* AppDelegate.swift */,
@@ -138,6 +145,32 @@
 				82D6D55324669BB2009EFF01 /* AlarmDatePicker.xib */,
 			);
 			path = AlarmDatePicker;
+			sourceTree = "<group>";
+		};
+		82D6D5592466BFEE009EFF01 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				82D6D5612466C076009EFF01 /* Observer Container */,
+				82D6D55A2466BFFE009EFF01 /* Dependency Injection */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		82D6D55A2466BFFE009EFF01 /* Dependency Injection */ = {
+			isa = PBXGroup;
+			children = (
+				82D6D55C2466C046009EFF01 /* DependencyContainer.swift */,
+				82D6D55B2466C046009EFF01 /* DependencyManager.swift */,
+			);
+			path = "Dependency Injection";
+			sourceTree = "<group>";
+		};
+		82D6D5612466C076009EFF01 /* Observer Container */ = {
+			isa = PBXGroup;
+			children = (
+				82D6D5622466C0AC009EFF01 /* ObserverContainer.swift */,
+			);
+			path = "Observer Container";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -242,10 +275,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				82D6D55F2466C046009EFF01 /* DependencyContainer.swift in Sources */,
 				82D6D5572466A0C1009EFF01 /* UIViewExtension.swift in Sources */,
 				82D6D53124666E37009EFF01 /* MainVC.swift in Sources */,
 				82D6D55224669910009EFF01 /* AlarmDatePicker.swift in Sources */,
 				82D6D52D24666E37009EFF01 /* AppDelegate.swift in Sources */,
+				82D6D5632466C0AC009EFF01 /* ObserverContainer.swift in Sources */,
+				82D6D55E2466C046009EFF01 /* DependencyManager.swift in Sources */,
 				82D6D52F24666E37009EFF01 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
