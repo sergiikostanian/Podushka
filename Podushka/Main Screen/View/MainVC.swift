@@ -30,6 +30,13 @@ final class MainVC: UIViewController {
         didSet { didSetState(state) }
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        let date = Date().advanced(by: 5 * 60)
+        updateAlarmDate(date)
+        alarmDatePicker.setDate(date)
+    }
+    
     // MARK: - Actions
     @IBAction private func sleepTimerViewTapped(_ sender: UITapGestureRecognizer) {
         selectSleepTimerValue { [weak self] value in
@@ -42,6 +49,7 @@ final class MainVC: UIViewController {
         alarmDatePicker.present(in: view) { [weak self] result in
             switch result {
             case .done(let date):
+                self?.updateAlarmDate(date)
                 self?.viewModel.alarmDate = date
             case .canceled:
                 break
@@ -62,6 +70,9 @@ final class MainVC: UIViewController {
 
         switch newState {
         case .idle:
+            let date = Date().advanced(by: 5 * 60)
+            updateAlarmDate(date)
+            alarmDatePicker.setDate(date)
             playPauseButton.setTitle("Play", for: .normal)
         case .playing:
             playPauseButton.setTitle("Pause", for: .normal)
@@ -89,6 +100,11 @@ final class MainVC: UIViewController {
         })
         
         present(alert, animated: true)
+    }
+    
+    private func updateAlarmDate(_ date: Date) {
+        alarmValueLabel.text = Formatter.timeFormatter.string(from: date)
+        viewModel.alarmDate = date
     }
 }
 

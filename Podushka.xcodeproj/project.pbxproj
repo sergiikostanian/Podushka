@@ -26,6 +26,7 @@
 		82D6D5712466CD8C009EFF01 /* nature.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 82D6D56F2466CD8C009EFF01 /* nature.m4a */; };
 		82D6D5722466CD8C009EFF01 /* alarm.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 82D6D5702466CD8C009EFF01 /* alarm.m4a */; };
 		82D6D5742467203F009EFF01 /* PauseableTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82D6D5732467203F009EFF01 /* PauseableTimer.swift */; };
+		82D6D57624672A4B009EFF01 /* TimeFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82D6D57524672A4B009EFF01 /* TimeFormatter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +63,7 @@
 		82D6D56F2466CD8C009EFF01 /* nature.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = nature.m4a; sourceTree = "<group>"; };
 		82D6D5702466CD8C009EFF01 /* alarm.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = alarm.m4a; sourceTree = "<group>"; };
 		82D6D5732467203F009EFF01 /* PauseableTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PauseableTimer.swift; sourceTree = "<group>"; };
+		82D6D57524672A4B009EFF01 /* TimeFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeFormatter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -147,6 +149,7 @@
 			children = (
 				82D6D5562466A0C1009EFF01 /* UIViewExtension.swift */,
 				82D6D5732467203F009EFF01 /* PauseableTimer.swift */,
+				82D6D57524672A4B009EFF01 /* TimeFormatter.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -326,6 +329,7 @@
 				82D6D53124666E37009EFF01 /* MainVC.swift in Sources */,
 				82D6D55224669910009EFF01 /* AlarmDatePicker.swift in Sources */,
 				82D6D5742467203F009EFF01 /* PauseableTimer.swift in Sources */,
+				82D6D57624672A4B009EFF01 /* TimeFormatter.swift in Sources */,
 				82D6D52D24666E37009EFF01 /* AppDelegate.swift in Sources */,
 				82D6D5632466C0AC009EFF01 /* ObserverContainer.swift in Sources */,
 				82D6D55E2466C046009EFF01 /* DependencyManager.swift in Sources */,

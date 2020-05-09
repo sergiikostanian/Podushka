@@ -32,6 +32,10 @@ final class AlarmDatePicker: UIView {
         setup()
     }
     
+    func setDate(_ date: Date) {
+        datePicker.setDate(date, animated: false)
+    }
+    
     func present(in view: UIView, _ completion: @escaping (PickingResult) -> Void){
         datePicker.minimumDate = Date().advanced(by: 60)
         
