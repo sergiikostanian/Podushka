@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		82D6D52D24666E37009EFF01 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82D6D52C24666E37009EFF01 /* AppDelegate.swift */; };
 		82D6D52F24666E37009EFF01 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82D6D52E24666E37009EFF01 /* SceneDelegate.swift */; };
-		82D6D53124666E37009EFF01 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82D6D53024666E37009EFF01 /* ViewController.swift */; };
+		82D6D53124666E37009EFF01 /* MainVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82D6D53024666E37009EFF01 /* MainVC.swift */; };
 		82D6D53424666E37009EFF01 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 82D6D53224666E37009EFF01 /* Main.storyboard */; };
 		82D6D53624666E39009EFF01 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 82D6D53524666E39009EFF01 /* Assets.xcassets */; };
 		82D6D53924666E39009EFF01 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 82D6D53724666E39009EFF01 /* LaunchScreen.storyboard */; };
@@ -30,7 +30,7 @@
 		82D6D52924666E37009EFF01 /* Podushka.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Podushka.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		82D6D52C24666E37009EFF01 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		82D6D52E24666E37009EFF01 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		82D6D53024666E37009EFF01 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		82D6D53024666E37009EFF01 /* MainVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC.swift; sourceTree = "<group>"; };
 		82D6D53324666E37009EFF01 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		82D6D53524666E39009EFF01 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		82D6D53824666E39009EFF01 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -79,10 +79,9 @@
 		82D6D52B24666E37009EFF01 /* Podushka */ = {
 			isa = PBXGroup;
 			children = (
+				82D6D54E24667942009EFF01 /* Main Screen */,
 				82D6D52C24666E37009EFF01 /* AppDelegate.swift */,
 				82D6D52E24666E37009EFF01 /* SceneDelegate.swift */,
-				82D6D53024666E37009EFF01 /* ViewController.swift */,
-				82D6D53224666E37009EFF01 /* Main.storyboard */,
 				82D6D53524666E39009EFF01 /* Assets.xcassets */,
 				82D6D53724666E39009EFF01 /* LaunchScreen.storyboard */,
 				82D6D53A24666E39009EFF01 /* Info.plist */,
@@ -97,6 +96,23 @@
 				82D6D54524666E3A009EFF01 /* Info.plist */,
 			);
 			path = PodushkaTests;
+			sourceTree = "<group>";
+		};
+		82D6D54E24667942009EFF01 /* Main Screen */ = {
+			isa = PBXGroup;
+			children = (
+				82D6D54F2466795B009EFF01 /* View */,
+			);
+			path = "Main Screen";
+			sourceTree = "<group>";
+		};
+		82D6D54F2466795B009EFF01 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				82D6D53024666E37009EFF01 /* MainVC.swift */,
+				82D6D53224666E37009EFF01 /* Main.storyboard */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -200,7 +216,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				82D6D53124666E37009EFF01 /* ViewController.swift in Sources */,
+				82D6D53124666E37009EFF01 /* MainVC.swift in Sources */,
 				82D6D52D24666E37009EFF01 /* AppDelegate.swift in Sources */,
 				82D6D52F24666E37009EFF01 /* SceneDelegate.swift in Sources */,
 			);
@@ -372,7 +388,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = SK.Podushka;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -390,7 +406,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = SK.Podushka;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
