@@ -10,6 +10,10 @@ import UIKit
 
 final class MainVC: UIViewController {
 
+    // MARK: Dependencies
+    private var dependencyManager: DependencyManager!
+    private var viewModel: MainViewModel!
+    
     // MARK: Outlets
     @IBOutlet private weak var stateLabel: UILabel!
     @IBOutlet private weak var sleepTimerValueLabel: UILabel!
@@ -56,3 +60,10 @@ final class MainVC: UIViewController {
     }
 }
 
+// MARK: - Dependency Injection
+extension MainVC {
+    func setupDependencies(with dependencyManager: DependencyManager) {
+        self.dependencyManager = dependencyManager
+        viewModel = try! dependencyManager.resolve() as MainViewModel
+    }
+}

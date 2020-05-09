@@ -61,16 +61,9 @@ final public class DependencyManager {
         // MARK: Services
         
         // MARK: ViewModels
-//        container.register { container -> MapViewModeling in
-//            let locationService: LocationService = try! container.resolve()
-//            let wikiService: WikiService = try! container.resolve()
-//            let digitransitService: DigitransitService = try! container.resolve()
-//
-//            return MapViewModel(dependencyManager: self, 
-//                                locationService: locationService, 
-//                                wikiService: wikiService,
-//                                digitransitService: digitransitService)
-//        }
+        container.register { container -> MainViewModel in
+            return MainVM(dependencyManager: self)
+        }
         
         observers.enumerateObservers { (observer) in
             observer.dependencyManager(self, didEndSetupContainer: .normal)
