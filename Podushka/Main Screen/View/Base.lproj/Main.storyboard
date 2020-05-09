@@ -144,6 +144,7 @@
                     <connections>
                         <outlet property="alarmValueLabel" destination="5nv-cE-xcD" id="NUn-Y4-GLa"/>
                         <outlet property="playPauseButton" destination="DfQ-l5-Zkl" id="I2y-dj-1KS"/>
+                        <outlet property="settingsStackView" destination="QAa-hd-6p5" id="eCB-2e-6Zb"/>
                         <outlet property="sleepTimerValueLabel" destination="4GN-kj-Xxv" id="0fz-ac-f8p"/>
                         <outlet property="stateLabel" destination="aYO-vh-878" id="9nW-bV-tNO"/>
                     </connections>

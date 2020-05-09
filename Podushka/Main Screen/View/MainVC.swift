@@ -17,6 +17,7 @@ final class MainVC: UIViewController {
     
     // MARK: Outlets
     @IBOutlet private weak var stateLabel: UILabel!
+    @IBOutlet private weak var settingsStackView: UIStackView!
     @IBOutlet private weak var sleepTimerValueLabel: UILabel!
     @IBOutlet private weak var alarmValueLabel: UILabel!
     @IBOutlet private weak var playPauseButton: UIButton!
@@ -31,7 +32,6 @@ final class MainVC: UIViewController {
 
     // MARK: - Actions
     @IBAction private func sleepTimerViewTapped(_ sender: UITapGestureRecognizer) {
-        guard state == .idle else { return }
         selectSleepTimerValue { [weak self] value in
             guard let value = value else { return }
             self?.viewModel.sleepTimerDuration = TimeInterval(value * 60)
@@ -39,7 +39,6 @@ final class MainVC: UIViewController {
     }
     
     @IBAction private func alarmViewTapped(_ sender: UITapGestureRecognizer) {
-        guard state == .idle else { return }
         alarmDatePicker.present(in: view) { [weak self] result in
             switch result {
             case .done(let date):
@@ -58,7 +57,9 @@ final class MainVC: UIViewController {
         guard isViewLoaded else { return }
         
         stateLabel.text = newState.rawValue.capitalized
-        
+        settingsStackView.isUserInteractionEnabled = (state == .idle)
+        settingsStackView.alpha = (state == .idle) ? 1 : 0.5
+
         switch newState {
         case .idle:
             playPauseButton.setTitle("Play", for: .normal)
