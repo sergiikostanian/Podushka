@@ -14,6 +14,9 @@
 		82D6D53624666E39009EFF01 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 82D6D53524666E39009EFF01 /* Assets.xcassets */; };
 		82D6D53924666E39009EFF01 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 82D6D53724666E39009EFF01 /* LaunchScreen.storyboard */; };
 		82D6D54424666E3A009EFF01 /* PodushkaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82D6D54324666E3A009EFF01 /* PodushkaTests.swift */; };
+		82D6D55224669910009EFF01 /* AlarmDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82D6D5512466990F009EFF01 /* AlarmDatePicker.swift */; };
+		82D6D55424669BB2009EFF01 /* AlarmDatePicker.xib in Resources */ = {isa = PBXBuildFile; fileRef = 82D6D55324669BB2009EFF01 /* AlarmDatePicker.xib */; };
+		82D6D5572466A0C1009EFF01 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82D6D5562466A0C1009EFF01 /* UIViewExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +41,9 @@
 		82D6D53F24666E3A009EFF01 /* PodushkaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PodushkaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		82D6D54324666E3A009EFF01 /* PodushkaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodushkaTests.swift; sourceTree = "<group>"; };
 		82D6D54524666E3A009EFF01 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		82D6D5512466990F009EFF01 /* AlarmDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmDatePicker.swift; sourceTree = "<group>"; };
+		82D6D55324669BB2009EFF01 /* AlarmDatePicker.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AlarmDatePicker.xib; sourceTree = "<group>"; };
+		82D6D5562466A0C1009EFF01 /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +85,7 @@
 		82D6D52B24666E37009EFF01 /* Podushka */ = {
 			isa = PBXGroup;
 			children = (
+				82D6D5552466A0A9009EFF01 /* Helpers */,
 				82D6D54E24667942009EFF01 /* Main Screen */,
 				82D6D52C24666E37009EFF01 /* AppDelegate.swift */,
 				82D6D52E24666E37009EFF01 /* SceneDelegate.swift */,
@@ -109,10 +116,28 @@
 		82D6D54F2466795B009EFF01 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				82D6D5582466B4FC009EFF01 /* AlarmDatePicker */,
 				82D6D53024666E37009EFF01 /* MainVC.swift */,
 				82D6D53224666E37009EFF01 /* Main.storyboard */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		82D6D5552466A0A9009EFF01 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				82D6D5562466A0C1009EFF01 /* UIViewExtension.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		82D6D5582466B4FC009EFF01 /* AlarmDatePicker */ = {
+			isa = PBXGroup;
+			children = (
+				82D6D5512466990F009EFF01 /* AlarmDatePicker.swift */,
+				82D6D55324669BB2009EFF01 /* AlarmDatePicker.xib */,
+			);
+			path = AlarmDatePicker;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -197,6 +222,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				82D6D53924666E39009EFF01 /* LaunchScreen.storyboard in Resources */,
+				82D6D55424669BB2009EFF01 /* AlarmDatePicker.xib in Resources */,
 				82D6D53624666E39009EFF01 /* Assets.xcassets in Resources */,
 				82D6D53424666E37009EFF01 /* Main.storyboard in Resources */,
 			);
@@ -216,7 +242,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				82D6D5572466A0C1009EFF01 /* UIViewExtension.swift in Sources */,
 				82D6D53124666E37009EFF01 /* MainVC.swift in Sources */,
+				82D6D55224669910009EFF01 /* AlarmDatePicker.swift in Sources */,
 				82D6D52D24666E37009EFF01 /* AppDelegate.swift in Sources */,
 				82D6D52F24666E37009EFF01 /* SceneDelegate.swift in Sources */,
 			);

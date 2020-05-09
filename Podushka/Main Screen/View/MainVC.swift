@@ -16,14 +16,11 @@ final class MainVC: UIViewController {
     @IBOutlet private weak var alarmValueLabel: UILabel!
     @IBOutlet private weak var playPauseButton: UIButton!
     
+    private let alarmDatePicker = AlarmDatePicker.loadFromNib()
+    
     /// Measured in minutes.
     private let availableSleepTimerValues = [0, 1, 3, 5, 10, 15]
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
-    }
-
     // MARK: - Actions
     @IBAction private func sleepTimerViewTapped(_ sender: UITapGestureRecognizer) {
         selectSleepTimerValue { value in
@@ -32,6 +29,9 @@ final class MainVC: UIViewController {
     }
     
     @IBAction private func alarmViewTapped(_ sender: UITapGestureRecognizer) {
+        alarmDatePicker.present(in: view) { result in
+            // TODO: update value
+        }
     }
     
     @IBAction private func playPauseButtonTapped(_ sender: UIButton) {
