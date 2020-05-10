@@ -32,5 +32,7 @@ protocol MainViewModel {
     func statePublisher() -> AnyPublisher<MainState, Never>
     /// Toggles playing or recording process.
     func toggleActivity()
+    /// Stops playing alarm audio and resets entire flow.
+    func resetFlow()
     
 }

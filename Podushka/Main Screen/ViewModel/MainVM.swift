@@ -8,11 +8,12 @@
 
 import Foundation
 import Combine
+import UserNotifications
 
 /**
  Main screen View Model implementation.
  */
-final class MainVM: MainViewModel {
+final class MainVM: NSObject, MainViewModel {
     
     var sleepTimerDuration: TimeInterval = 60
     var alarmDate: Date = Date().advanced(by: 10 * 60)
@@ -24,10 +25,13 @@ final class MainVM: MainViewModel {
     private let stateSubject = CurrentValueSubject<MainState, Never>(.idle)
     private var subscribers = Set<AnyCancellable>()
     private var playingTimer = PauseableTimer()
+    private var alarmTimer = PauseableTimer()
 
     init(audioPlayer: AudioPlayerService, audioRecorder: AudioRecorderService) {
         self.audioPlayer = audioPlayer
         self.audioRecorder = audioRecorder
+        
+        super.init()
 
         self.audioPlayer.interruptionPublisher().sink { [weak self] (event) in
             self?.hanleAudioInterruption(with: event)
@@ -44,11 +48,14 @@ final class MainVM: MainViewModel {
         // Start the entire flow from the beginning. 
         case .idle:
             playingTimer.schedule(with: sleepTimerDuration) { [weak self] in
+                guard let strongSelf = self else { return }
+                guard strongSelf.stateSubject.value == .playing else { return }
                 // The audio playing stage is completed. Switch to the Recording stage.
-                self?.audioPlayer.stop()
-                self?.switchToRecordingStage()
+                strongSelf.audioPlayer.stop()
+                strongSelf.switchToRecordingStage()
             }
             audioPlayer.play(audio: .nature)
+            scheduleAlarm()
             stateSubject.send(.playing)
         
         // Pause playing.
@@ -62,10 +69,11 @@ final class MainVM: MainViewModel {
             if audioPlayer.isActive {
                 playingTimer.resume()
                 audioPlayer.resume()
+                stateSubject.send(.playing)
             } else if audioRecorder.isActive {
                 audioRecorder.resume()
+                stateSubject.send(.recording)
             }
-            stateSubject.send(.playing)
             
         // Pause recording.
         case .recording:
@@ -77,9 +85,34 @@ final class MainVM: MainViewModel {
             break
         }
     }
+    
+    func resetFlow() {
+        audioPlayer.stop()
+        stateSubject.send(.idle)
+    }
+    
 }
 
 extension MainVM {
+    
+    private func scheduleAlarm() {
+        let center = UNUserNotificationCenter.current()
+        center.delegate = self
+        center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+            guard granted, error == nil else { return }
+
+            let content = UNMutableNotificationContent()
+            content.title = "Alarm"
+            content.body = "Rise and shine!"
+            content.sound = .default
+
+            let dateComponents = Calendar.current.dateComponents([.hour, .minute], from: self.alarmDate)        
+            let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)        
+            let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+
+            center.add(request)
+        }
+    }
     
     private func switchToRecordingStage() {
         audioRecorder.start()
@@ -90,13 +123,39 @@ extension MainVM {
         switch event {
         case .began:
             if stateSubject.value == .playing {
+                if audioPlayer.isActive {
+                    playingTimer.pause()
+                    audioPlayer.pause()
+                } else if audioRecorder.isActive {
+                    audioRecorder.pause()
+                }
                 stateSubject.send(.paused)
             }
+            
         case .endedWithResume:
             if stateSubject.value == .paused {
-                stateSubject.send(.playing)
+                if audioPlayer.isActive {
+                    playingTimer.resume()
+                    audioPlayer.resume()
+                    stateSubject.send(.playing)
+                } else if audioRecorder.isActive {
+                    audioRecorder.resume()
+                    stateSubject.send(.recording)
+                }
             }
+            
         default: break
         }
     }
 }
+
+extension MainVM: UNUserNotificationCenterDelegate {
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        // Alarm notification was triggered in the foreground.
+        audioRecorder.stop()
+        audioPlayer.play(audio: .alarm)
+        stateSubject.send(.alarm)
+    }
+}
+

@@ -60,8 +60,12 @@ final class MainVC: UIViewController {
     @IBAction private func playPauseButtonTapped(_ sender: UIButton) {
         viewModel.toggleActivity()
     }
+}
+
+// MARK: - Helpers
+extension MainVC {
     
-    func didSetState(_ newState: MainState) {
+    private func didSetState(_ newState: MainState) {
         guard isViewLoaded else { return }
         
         stateLabel.text = newState.rawValue.capitalized
@@ -77,13 +81,14 @@ final class MainVC: UIViewController {
         case .playing:
             playPauseButton.setTitle("Pause", for: .normal)
         case .paused:
-            playPauseButton.setTitle("Play", for: .normal)
-        default:
-            break
+            playPauseButton.setTitle("Continue", for: .normal)
+        case .recording:
+            playPauseButton.setTitle("Pause", for: .normal)
+        case .alarm:
+            showAlarmAlert()
         }
     }
     
-    // MARK: - Helpers
     private func selectSleepTimerValue(_ completion: @escaping (Int?) -> Void) {
         let alert = UIAlertController(title: "Sleep Timer", message: nil, preferredStyle: .actionSheet)
         
@@ -94,17 +99,23 @@ final class MainVC: UIViewController {
                 completion(value)
             })
         })
-        
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel) { _ in 
             completion(nil)
         })
-        
         present(alert, animated: true)
     }
     
     private func updateAlarmDate(_ date: Date) {
         alarmValueLabel.text = Formatter.timeFormatter.string(from: date)
         viewModel.alarmDate = date
+    }
+    
+    private func showAlarmAlert() {
+        let alert = UIAlertController(title: "Alarm", message: "Alarm went off", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Stop", style: .cancel) { _ in 
+            self.viewModel.resetFlow()
+        })
+        present(alert, animated: true)
     }
 }
 

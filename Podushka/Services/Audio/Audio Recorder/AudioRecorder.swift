@@ -35,6 +35,7 @@ final class AudioRecorder: AudioRecorderService {
                 let settings = [
                     AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
                     AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue,
+                    AVSampleRateKey: 12000,
                     AVNumberOfChannelsKey: 1
                 ]
 
@@ -107,7 +108,6 @@ extension AudioRecorder {
             let options = AVAudioSession.InterruptionOptions(rawValue: optionsValue)
             
             if options.contains(.shouldResume) {
-                audioRecorder?.record()
                 interruptionSubject.send(.endedWithResume)
             } else {
                 interruptionSubject.send(.endedWithoutResume)

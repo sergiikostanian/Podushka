@@ -96,7 +96,6 @@ extension AudioPlayer {
             let options = AVAudioSession.InterruptionOptions(rawValue: optionsValue)
             
             if options.contains(.shouldResume) {
-                player?.play()
                 interruptionSubject.send(.endedWithResume)
             } else {
                 interruptionSubject.send(.endedWithoutResume)
