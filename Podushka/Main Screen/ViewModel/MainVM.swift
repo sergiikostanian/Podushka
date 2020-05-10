@@ -56,6 +56,8 @@ final class MainVM: NSObject, MainViewModel {
             
         // Start the entire flow from the beginning. 
         case .idle:
+            scheduleAlarm()
+
             // Switch to the recording stage immediately if the sleep timer if off.
             guard sleepTimerDuration > 0 else {
                 switchToRecordingStage()
@@ -70,7 +72,6 @@ final class MainVM: NSObject, MainViewModel {
                 strongSelf.switchToRecordingStage()
             }
             audioPlayer.play(audio: .nature)
-            scheduleAlarm()
             stateSubject.send(.playing)
         
         // Pause playing.
