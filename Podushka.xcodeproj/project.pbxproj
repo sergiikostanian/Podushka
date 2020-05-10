@@ -27,6 +27,8 @@
 		82D6D5722466CD8C009EFF01 /* alarm.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 82D6D5702466CD8C009EFF01 /* alarm.m4a */; };
 		82D6D5742467203F009EFF01 /* PauseableTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82D6D5732467203F009EFF01 /* PauseableTimer.swift */; };
 		82D6D57624672A4B009EFF01 /* TimeFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82D6D57524672A4B009EFF01 /* TimeFormatter.swift */; };
+		82D6D57924672D74009EFF01 /* AudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82D6D57824672D74009EFF01 /* AudioRecorder.swift */; };
+		82D6D57B24672D7E009EFF01 /* AudioRecorderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82D6D57A24672D7E009EFF01 /* AudioRecorderService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +66,8 @@
 		82D6D5702466CD8C009EFF01 /* alarm.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = alarm.m4a; sourceTree = "<group>"; };
 		82D6D5732467203F009EFF01 /* PauseableTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PauseableTimer.swift; sourceTree = "<group>"; };
 		82D6D57524672A4B009EFF01 /* TimeFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeFormatter.swift; sourceTree = "<group>"; };
+		82D6D57824672D74009EFF01 /* AudioRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorder.swift; sourceTree = "<group>"; };
+		82D6D57A24672D7E009EFF01 /* AudioRecorderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorderService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -167,6 +171,7 @@
 			isa = PBXGroup;
 			children = (
 				82D6D5692466CCD3009EFF01 /* Audio Player */,
+				82D6D57724672D50009EFF01 /* Audio Recorder */,
 				82D6D5612466C076009EFF01 /* Observer Container */,
 				82D6D55A2466BFFE009EFF01 /* Dependency Injection */,
 			);
@@ -216,6 +221,15 @@
 				82D6D56F2466CD8C009EFF01 /* nature.m4a */,
 			);
 			path = "Audio Files";
+			sourceTree = "<group>";
+		};
+		82D6D57724672D50009EFF01 /* Audio Recorder */ = {
+			isa = PBXGroup;
+			children = (
+				82D6D57A24672D7E009EFF01 /* AudioRecorderService.swift */,
+				82D6D57824672D74009EFF01 /* AudioRecorder.swift */,
+			);
+			path = "Audio Recorder";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -330,11 +344,13 @@
 				82D6D55224669910009EFF01 /* AlarmDatePicker.swift in Sources */,
 				82D6D5742467203F009EFF01 /* PauseableTimer.swift in Sources */,
 				82D6D57624672A4B009EFF01 /* TimeFormatter.swift in Sources */,
+				82D6D57924672D74009EFF01 /* AudioRecorder.swift in Sources */,
 				82D6D52D24666E37009EFF01 /* AppDelegate.swift in Sources */,
 				82D6D5632466C0AC009EFF01 /* ObserverContainer.swift in Sources */,
 				82D6D55E2466C046009EFF01 /* DependencyManager.swift in Sources */,
 				82D6D5662466C50A009EFF01 /* MainViewModel.swift in Sources */,
 				82D6D56B2466CCFB009EFF01 /* AudioPlayerService.swift in Sources */,
+				82D6D57B24672D7E009EFF01 /* AudioRecorderService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
