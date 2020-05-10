@@ -132,12 +132,10 @@ extension MainVM {
         switch event {
         case .began:
             if stateSubject.value == .playing {
-                if audioPlayer.isActive {
-                    playingTimer.pause()
-                    audioPlayer.pause()
-                } else if audioRecorder.isActive {
-                    audioRecorder.pause()
-                }
+                playingTimer.pause()
+                audioPlayer.pause()
+            } else if stateSubject.value == .recording {
+                audioRecorder.pause()
                 stateSubject.send(.paused)
             }
             
