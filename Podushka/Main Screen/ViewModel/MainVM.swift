@@ -56,6 +56,12 @@ final class MainVM: NSObject, MainViewModel {
             
         // Start the entire flow from the beginning. 
         case .idle:
+            // Switch to the recording stage immediately if the sleep timer if off.
+            guard sleepTimerDuration > 0 else {
+                switchToRecordingStage()
+                break
+            }
+            
             playingTimer.schedule(with: sleepTimerDuration) { [weak self] in
                 guard let strongSelf = self else { return }
                 guard strongSelf.stateSubject.value == .playing else { return }
