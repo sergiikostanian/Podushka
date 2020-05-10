@@ -11,6 +11,10 @@ import AVFoundation
 
 final class AudioRecorder: AudioRecorderService {
     
+    var isActive: Bool {
+        return audioRecorder != nil
+    }
+    
     private var audioRecorder: AVAudioRecorder?
     private let audioSession = AVAudioSession.sharedInstance()
 

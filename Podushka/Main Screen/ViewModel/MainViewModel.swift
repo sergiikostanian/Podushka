@@ -30,7 +30,7 @@ protocol MainViewModel {
         
     /// The main state publisher.
     func statePublisher() -> AnyPublisher<MainState, Never>
-    /// Toggles playing process.
-    func togglePlaying()
+    /// Toggles playing or recording process.
+    func toggleActivity()
     
 }

@@ -23,6 +23,9 @@ enum InterruptionEvent {
 
 protocol AudioPlayerService {
     
+    /// Indicates whether the audio player service is acitve. Returns `true` If it's playing or paused.
+    var isActive: Bool { get }
+    
     /// Starts playing specified audio file.
     func play(audio: AudioFile)
     /// Pauses playing current audio file.

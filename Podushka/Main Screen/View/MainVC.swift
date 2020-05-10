@@ -58,7 +58,7 @@ final class MainVC: UIViewController {
     }
     
     @IBAction private func playPauseButtonTapped(_ sender: UIButton) {
-        viewModel.togglePlaying()
+        viewModel.toggleActivity()
     }
     
     func didSetState(_ newState: MainState) {

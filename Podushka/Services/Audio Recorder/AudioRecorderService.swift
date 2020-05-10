@@ -10,6 +10,9 @@ import Foundation
 
 protocol AudioRecorderService {
     
+    /// Indicates whether the audio recorder service is acitve. Returns `true` If it's playing or paused.
+    var isActive: Bool { get }
+
     /// Starts recording audio.
     func start()
     /// Pauses current recording.

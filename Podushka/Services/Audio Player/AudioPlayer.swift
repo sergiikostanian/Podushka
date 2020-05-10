@@ -12,6 +12,10 @@ import Combine
 
 final class AudioPlayer: AudioPlayerService {
     
+    var isActive: Bool {
+        return player != nil
+    }
+    
     private var player: AVAudioPlayer?
     private let audioSession = AVAudioSession.sharedInstance()
     
