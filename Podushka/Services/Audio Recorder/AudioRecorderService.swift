@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Combine
 
 protocol AudioRecorderService {
     
@@ -22,4 +23,6 @@ protocol AudioRecorderService {
     /// Stops current recording.
     func stop()
     
+    /// Returns a publisher that emits events when interruption notifications occur.
+    func interruptionPublisher() -> AnyPublisher<InterruptionEvent, Never>
 }
