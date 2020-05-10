@@ -14,13 +14,6 @@ enum AudioFile: String {
     case alarm = "alarm.m4a"
 }
 
-enum InterruptionEvent {
-    case began
-    case endedWithResume
-    case endedWithoutResume
-    case unexpected
-}
-
 protocol AudioPlayerService {
     
     /// Indicates whether the audio player service is acitve. Returns `true` If it's playing or paused.
