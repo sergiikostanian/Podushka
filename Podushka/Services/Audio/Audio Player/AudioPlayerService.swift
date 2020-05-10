@@ -14,7 +14,7 @@ enum AudioFile: String {
     case alarm = "alarm.m4a"
 }
 
-protocol AudioPlayerService {
+protocol AudioPlayerService: AudioInterruptable {
     
     /// Indicates whether the audio player service is acitve. Returns `true` If it's playing or paused.
     var isActive: Bool { get }
@@ -28,6 +28,4 @@ protocol AudioPlayerService {
     /// Stops playing current audio file.
     func stop()
     
-    /// Returns a publisher that emits events when interruption notifications occur.
-    func interruptionPublisher() -> AnyPublisher<InterruptionEvent, Never>
 }

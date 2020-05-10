@@ -33,9 +33,18 @@ final class MainVM: NSObject, MainViewModel {
         
         super.init()
 
-        self.audioPlayer.interruptionPublisher().sink { [weak self] (event) in
+        self.audioPlayer.interruptionSubject.sink { [weak self] (event) in
             self?.hanleAudioInterruption(with: event)
         }.store(in: &subscribers)
+        
+        self.audioRecorder.interruptionSubject.sink { [weak self] (event) in
+            self?.hanleAudioInterruption(with: event)
+        }.store(in: &subscribers)
+    }
+    
+    deinit {
+        subscribers.forEach({ $0.cancel() })
+        subscribers.removeAll()
     }
 
     func statePublisher() -> AnyPublisher<MainState, Never> {

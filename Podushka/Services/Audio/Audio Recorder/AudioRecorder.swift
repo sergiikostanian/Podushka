@@ -16,11 +16,11 @@ final class AudioRecorder: AudioRecorderService {
         return audioRecorder != nil
     }
     
+    let interruptionSubject = PassthroughSubject<InterruptionEvent, Never>()
+    var interruptionSubscription: AnyCancellable?
+    
     private var audioRecorder: AVAudioRecorder?
     private let audioSession = AVAudioSession.sharedInstance()
-
-    private let interruptionSubject = PassthroughSubject<InterruptionEvent, Never>()
-    private var interruptionSubscription: AnyCancellable?
 
     func start() {
         audioSession.requestRecordPermission() { [weak self] granted in
@@ -62,10 +62,6 @@ final class AudioRecorder: AudioRecorderService {
         unsubsrcibeFromInterruptions()
         try? audioSession.setActive(false)
     }
-    
-    func interruptionPublisher() -> AnyPublisher<InterruptionEvent, Never> {
-        return interruptionSubject.eraseToAnyPublisher()
-    }
 
 }
 
@@ -73,50 +69,6 @@ extension AudioRecorder {
     
     private var documentsDirectory: URL {
         return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-    }
-
-    private func subsrcibeForInterruptions() {
-        interruptionSubscription = NotificationCenter.default
-            .publisher(for: AVAudioSession.interruptionNotification)
-            .sink { (notification) in
-                self.handleInterruption(notification)
-        }
-    }
-    
-    private func unsubsrcibeFromInterruptions() {
-        interruptionSubscription?.cancel()
-        interruptionSubscription = nil
-    }
-    
-    private func handleInterruption(_ notification: Notification) {
-        guard let info = notification.userInfo,
-            let typeValue = info[AVAudioSessionInterruptionTypeKey] as? UInt,
-            let type = AVAudioSession.InterruptionType(rawValue: typeValue) else {
-                interruptionSubject.send(.unexpected)
-                return
-        }
-        
-        switch type {
-        case .began:
-            interruptionSubject.send(.began)
-
-        case .ended:
-            guard let optionsValue = info[AVAudioSessionInterruptionOptionKey] as? UInt else { 
-                interruptionSubject.send(.unexpected)
-                return
-            }
-            let options = AVAudioSession.InterruptionOptions(rawValue: optionsValue)
-            
-            if options.contains(.shouldResume) {
-                interruptionSubject.send(.endedWithResume)
-            } else {
-                interruptionSubject.send(.endedWithoutResume)
-            }
-            
-        default:
-            interruptionSubject.send(.unexpected)
-            break
-        }
     }
 
 }

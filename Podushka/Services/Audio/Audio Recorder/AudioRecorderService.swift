@@ -9,7 +9,7 @@
 import Foundation
 import Combine
 
-protocol AudioRecorderService {
+protocol AudioRecorderService: AudioInterruptable {
     
     /// Indicates whether the audio recorder service is acitve. Returns `true` If it's playing or paused.
     var isActive: Bool { get }
@@ -23,6 +23,4 @@ protocol AudioRecorderService {
     /// Stops current recording.
     func stop()
     
-    /// Returns a publisher that emits events when interruption notifications occur.
-    func interruptionPublisher() -> AnyPublisher<InterruptionEvent, Never>
 }
