@@ -65,12 +65,16 @@ final public class DependencyManager {
         container.register { _ in
             AudioRecorder() as AudioRecorderService
         }
+        container.register { _ in
+            BackgroundManager() as BackgroundService
+        }
 
         // MARK: ViewModels
         container.register { container -> MainViewModel in
             let audioPlayer: AudioPlayerService = try! container.resolve()
             let audioRecorder: AudioRecorderService = try! container.resolve()
-            return MainVM(audioPlayer: audioPlayer, audioRecorder: audioRecorder)
+            let bgService: BackgroundService = try! container.resolve()
+            return MainVM(audioPlayer: audioPlayer, audioRecorder: audioRecorder, bgService: bgService)
         }
         
         observers.enumerateObservers { (observer) in

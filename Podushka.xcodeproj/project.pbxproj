@@ -30,6 +30,8 @@
 		82D6D57924672D74009EFF01 /* AudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82D6D57824672D74009EFF01 /* AudioRecorder.swift */; };
 		82D6D57B24672D7E009EFF01 /* AudioRecorderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82D6D57A24672D7E009EFF01 /* AudioRecorderService.swift */; };
 		82D6D58024682932009EFF01 /* AudioInterruptable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82D6D57F24682932009EFF01 /* AudioInterruptable.swift */; };
+		82D6D58524688BA6009EFF01 /* BackgroundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82D6D58424688BA6009EFF01 /* BackgroundManager.swift */; };
+		82D6D58824688F8D009EFF01 /* BackgroundService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82D6D58724688F8D009EFF01 /* BackgroundService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +72,8 @@
 		82D6D57824672D74009EFF01 /* AudioRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorder.swift; sourceTree = "<group>"; };
 		82D6D57A24672D7E009EFF01 /* AudioRecorderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorderService.swift; sourceTree = "<group>"; };
 		82D6D57F24682932009EFF01 /* AudioInterruptable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioInterruptable.swift; sourceTree = "<group>"; };
+		82D6D58424688BA6009EFF01 /* BackgroundManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundManager.swift; sourceTree = "<group>"; };
+		82D6D58724688F8D009EFF01 /* BackgroundService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -172,6 +176,7 @@
 		82D6D5592466BFEE009EFF01 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				82D6D58624688F7A009EFF01 /* Background */,
 				82D6D57C2467DD22009EFF01 /* Audio */,
 				82D6D5612466C076009EFF01 /* Observer Container */,
 				82D6D55A2466BFFE009EFF01 /* Dependency Injection */,
@@ -241,6 +246,15 @@
 				82D6D57724672D50009EFF01 /* Audio Recorder */,
 			);
 			path = Audio;
+			sourceTree = "<group>";
+		};
+		82D6D58624688F7A009EFF01 /* Background */ = {
+			isa = PBXGroup;
+			children = (
+				82D6D58724688F8D009EFF01 /* BackgroundService.swift */,
+				82D6D58424688BA6009EFF01 /* BackgroundManager.swift */,
+			);
+			path = Background;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -347,8 +361,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				82D6D58524688BA6009EFF01 /* BackgroundManager.swift in Sources */,
 				82D6D55F2466C046009EFF01 /* DependencyContainer.swift in Sources */,
 				82D6D5682466C517009EFF01 /* MainVM.swift in Sources */,
+				82D6D58824688F8D009EFF01 /* BackgroundService.swift in Sources */,
 				82D6D56D2466CD19009EFF01 /* AudioPlayer.swift in Sources */,
 				82D6D5572466A0C1009EFF01 /* UIViewExtension.swift in Sources */,
 				82D6D53124666E37009EFF01 /* MainVC.swift in Sources */,
@@ -529,7 +545,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = SK.Podushka;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sk.podushka;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -547,7 +563,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = SK.Podushka;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sk.podushka;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;

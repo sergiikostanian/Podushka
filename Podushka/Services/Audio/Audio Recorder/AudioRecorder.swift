@@ -23,25 +23,15 @@ final class AudioRecorder: AudioRecorderService {
     private let audioSession = AVAudioSession.sharedInstance()
 
     func start() {
+        if audioSession.recordPermission == .granted {
+            startRecording()
+            return
+        }
+        
         audioSession.requestRecordPermission() { [weak self] granted in
             guard granted else { return }
-            guard let strongSelf = self else { return }
-            
             DispatchQueue.main.async {
-                try? strongSelf.audioSession.setCategory(.playAndRecord, mode: .default)
-                try? strongSelf.audioSession.setActive(true)
-
-                let audioFilename = strongSelf.documentsDirectory.appendingPathComponent("\(Date()).m4a")
-                let settings = [
-                    AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
-                    AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue,
-                    AVSampleRateKey: 12000,
-                    AVNumberOfChannelsKey: 1
-                ]
-
-                strongSelf.audioRecorder = try? AVAudioRecorder(url: audioFilename, settings: settings)
-                strongSelf.audioRecorder?.record()
-                strongSelf.subsrcibeForInterruptions()
+                self?.startRecording()
             }
         }
     }
@@ -67,8 +57,21 @@ final class AudioRecorder: AudioRecorderService {
 
 extension AudioRecorder {
     
-    private var documentsDirectory: URL {
-        return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-    }
+    private func startRecording() {
+        try? audioSession.setCategory(.playAndRecord, mode: .default)
+        try? audioSession.setActive(true)
 
+        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        let audioFilename = documentsDirectory.appendingPathComponent("\(Date()).m4a")
+        let settings = [
+            AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
+            AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue,
+            AVSampleRateKey: 12000,
+            AVNumberOfChannelsKey: 1
+        ]
+
+        audioRecorder = try? AVAudioRecorder(url: audioFilename, settings: settings)
+        audioRecorder?.record()
+        subsrcibeForInterruptions()
+    }
 }

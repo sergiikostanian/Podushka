@@ -9,6 +9,8 @@
 import Foundation
 import Combine
 import UserNotifications
+import UIKit.UIApplication
+import BackgroundTasks
 
 /**
  Main screen View Model implementation.
@@ -16,21 +18,25 @@ import UserNotifications
 final class MainVM: NSObject, MainViewModel {
     
     var sleepTimerDuration: TimeInterval = 60
-    var alarmDate: Date = Date().advanced(by: 10 * 60)
+    var alarmDate: Date = Date().advanced(by: 5 * 60)
     
     // MARK: Dependencies
     private let audioPlayer: AudioPlayerService
     private let audioRecorder: AudioRecorderService
+    private let bgService: BackgroundService
 
     private let stateSubject = CurrentValueSubject<MainState, Never>(.idle)
     private var subscribers = Set<AnyCancellable>()
     private var playingTimer = PauseableTimer()
     private var alarmTimer = PauseableTimer()
 
-    init(audioPlayer: AudioPlayerService, audioRecorder: AudioRecorderService) {
+    init(audioPlayer: AudioPlayerService, 
+         audioRecorder: AudioRecorderService, 
+         bgService: BackgroundService) {
         self.audioPlayer = audioPlayer
         self.audioRecorder = audioRecorder
-        
+        self.bgService = bgService
+
         super.init()
 
         self.audioPlayer.interruptionSubject.sink { [weak self] (event) in
@@ -39,6 +45,24 @@ final class MainVM: NSObject, MainViewModel {
         
         self.audioRecorder.interruptionSubject.sink { [weak self] (event) in
             self?.hanleAudioInterruption(with: event)
+        }.store(in: &subscribers)
+        
+        self.bgService.alarmBackgroundTaskPublisher().sink { [weak self] in
+            self?.hanleAlarmBackgroundTask()
+        }.store(in: &subscribers)
+
+        NotificationCenter.default.publisher(for: UIApplication.didEnterBackgroundNotification).sink { (_) in
+            guard self.stateSubject.value != .idle else { return }
+            let request = BGAppRefreshTaskRequest(identifier: "com.sk.podushka.alarmTask")
+            request.earliestBeginDate = self.alarmDate
+            try? BGTaskScheduler.shared.submit(request)
+        }.store(in: &subscribers)
+        
+        NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification).sink { (_) in
+            if Date() > self.alarmDate {
+                self.audioRecorder.stop()
+                self.stateSubject.send(.idle)
+            }
         }.store(in: &subscribers)
     }
     
@@ -122,7 +146,7 @@ extension MainVM {
             content.body = "Rise and shine!"
             content.sound = .default
 
-            let dateComponents = Calendar.current.dateComponents([.hour, .minute], from: self.alarmDate)        
+            let dateComponents = Calendar.current.dateComponents([.hour, .minute, .second], from: self.alarmDate)        
             let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)        
             let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
 
@@ -160,6 +184,12 @@ extension MainVM {
             
         default: break
         }
+    }
+    
+    private func hanleAlarmBackgroundTask() {
+        guard stateSubject.value != .idle else { return }
+        audioRecorder.stop()
+        stateSubject.send(.idle)
     }
 }
 
