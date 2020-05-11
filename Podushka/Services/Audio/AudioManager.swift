@@ -9,6 +9,7 @@
 import Foundation
 import AVFoundation
 import Combine
+import MediaPlayer
 
 final class AudioManager: AudioService {
     
@@ -26,6 +27,9 @@ final class AudioManager: AudioService {
     private var player: AVAudioPlayer?
     private var recorder: AVAudioRecorder?
     
+    private var playCommandTarget: Any?
+    private var pauseCommandTarget: Any?
+
     // MARK: - Session
     func startSession() {
         try? audioSession.setCategory(.playAndRecord, mode: .default)
@@ -98,6 +102,34 @@ final class AudioManager: AudioService {
     func stopRecording() {
         recorder?.stop()
         recorder = nil
+    }
+    
+    func setRemoteCommandCenter(enabled: Bool) {
+        let center = MPRemoteCommandCenter.shared()
+        if enabled {
+            let center = MPRemoteCommandCenter.shared()
+            playCommandTarget = center.playCommand.addTarget { event -> MPRemoteCommandHandlerStatus in
+                guard let player = self.player else { return .noActionableNowPlayingItem }
+                if !player.isPlaying {
+                    self.resumePlaying()
+                    return .success
+                }
+                return .commandFailed
+            }
+            pauseCommandTarget = center.pauseCommand.addTarget { event -> MPRemoteCommandHandlerStatus in
+                guard let player = self.player else { return .noActionableNowPlayingItem }
+                if player.isPlaying {
+                    self.pausePlaying()
+                    return .success
+                }
+                return .commandFailed
+            }
+        } else {
+            center.playCommand.removeTarget(playCommandTarget)
+            center.pauseCommand.removeTarget(pauseCommandTarget)
+        }
+        center.playCommand.isEnabled = enabled
+        center.pauseCommand.isEnabled = enabled
     }
     
 }

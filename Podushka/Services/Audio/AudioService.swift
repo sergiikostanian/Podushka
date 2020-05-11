@@ -46,4 +46,7 @@ protocol AudioService: AudioInterruptable {
     /// Stops current recording.
     func stopRecording()
     
+    /// Enabled or disables remote command center contolling play and pause actions for currently playing audio.
+    func setRemoteCommandCenter(enabled: Bool)
+    
 }

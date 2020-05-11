@@ -62,6 +62,7 @@ final class MainVM: MainViewModel {
             
             scheduleSleep()
             audioService.play(audio: .nature)
+            audioService.setRemoteCommandCenter(enabled: true)
             audioService.startRecording()
             stateSubject.send(.playing)
         
@@ -125,6 +126,7 @@ extension MainVM {
             guard let strongSelf = self else { return }
             // The audio recording stage is completed. Switch to the alarm stage.
             strongSelf.audioService.stopRecording()
+            strongSelf.audioService.setRemoteCommandCenter(enabled: false)
             strongSelf.audioService.play(audio: .alarm)
             strongSelf.stateSubject.send(.alarm)
         }
@@ -136,6 +138,7 @@ extension MainVM {
             guard strongSelf.stateSubject.value == .playing else { return }
             // The audio playing stage is completed. Switch to the Recording stage.
             strongSelf.audioService.stopPlaying()
+            strongSelf.audioService.setRemoteCommandCenter(enabled: false)
             strongSelf.stateSubject.send(.recording)
         }
     }
