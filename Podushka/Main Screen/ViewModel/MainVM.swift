@@ -106,13 +106,12 @@ extension MainVM {
     
     private func scheduleAlarm() {
         let center = UNUserNotificationCenter.current()
-        center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+        center.requestAuthorization(options: [.alert, .badge]) { granted, error in
             guard granted, error == nil else { return }
 
             let content = UNMutableNotificationContent()
             content.title = "Alarm"
             content.body = "Rise and shine!"
-            content.sound = .default
 
             let dateComponents = Calendar.current.dateComponents([.hour, .minute, .second], from: self.alarmDate)        
             let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)        
