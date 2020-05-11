@@ -51,25 +51,16 @@ final class MainVM: MainViewModel {
             
         // Start the entire flow from the beginning. 
         case .idle:
-            print("idle")
-            
             audioService.startSession()
             scheduleAlarm()
 
             // Switch to the recording stage immediately if the sleep timer if off.
             guard sleepTimerDuration > 0 else {
-                switchToRecordingStage()
+                stateSubject.send(.recording)
                 break
             }
             
-            playingTimer.schedule(with: sleepTimerDuration) { [weak self] in
-                print("playingTimer")
-                guard let strongSelf = self else { return }
-                guard strongSelf.stateSubject.value == .playing else { return }
-                // The audio playing stage is completed. Switch to the Recording stage.
-                strongSelf.audioService.stopPlaying()
-                strongSelf.switchToRecordingStage()
-            }
+            scheduleSleep()
             audioService.startRecording()
             audioService.play(audio: .nature)
             stateSubject.send(.playing)
@@ -132,17 +123,22 @@ extension MainVM {
         
         let timeInterval = alarmDate.timeIntervalSince(Date())
         alarmTimer.schedule(with: timeInterval) { [weak self] in
-            print("alarmTimer")
             guard let strongSelf = self else { return }
+            // The audio recording stage is completed. Switch to the alarm stage.
             strongSelf.audioService.play(audio: .alarm)
             strongSelf.stateSubject.send(.alarm)
             strongSelf.audioService.stopRecording()
         }
-
     }
     
-    private func switchToRecordingStage() {
-        stateSubject.send(.recording)
+    private func scheduleSleep() {
+        playingTimer.schedule(with: sleepTimerDuration) { [weak self] in
+            guard let strongSelf = self else { return }
+            guard strongSelf.stateSubject.value == .playing else { return }
+            // The audio playing stage is completed. Switch to the Recording stage.
+            strongSelf.audioService.stopPlaying()
+            strongSelf.stateSubject.send(.recording)
+        }
     }
     
     private func hanleAudioInterruption(with event: InterruptionEvent) {
