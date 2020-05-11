@@ -23,16 +23,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let mapVC = window?.rootViewController as! MainVC
         mapVC.setupDependencies(with: dependencyManager)
 
-        let bgService: BackgroundService = try! dependencyManager.resolve()
-
-        BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.sk.podushka.alarmTask", using: nil) { (task) in
-            task.expirationHandler = {
-                task.setTaskCompleted(success: false)
-            }
-            bgService.handleAlarmBackgroundTask()
-            task.setTaskCompleted(success: true)
-        }
-
         return true
     }
     

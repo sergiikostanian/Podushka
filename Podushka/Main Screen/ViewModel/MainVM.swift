@@ -9,60 +9,31 @@
 import Foundation
 import Combine
 import UserNotifications
-import UIKit.UIApplication
-import BackgroundTasks
 
 /**
  Main screen View Model implementation.
  */
-final class MainVM: NSObject, MainViewModel {
+final class MainVM: MainViewModel {
     
     var sleepTimerDuration: TimeInterval = 60
     var alarmDate: Date = Date().advanced(by: 5 * 60)
     
     // MARK: Dependencies
-    private let audioPlayer: AudioPlayerService
-    private let audioRecorder: AudioRecorderService
-    private let bgService: BackgroundService
+    private let audioService: AudioService
 
+    // MARK: Subscriptions
     private let stateSubject = CurrentValueSubject<MainState, Never>(.idle)
     private var subscribers = Set<AnyCancellable>()
+    
+    // MARK: Timers
     private var playingTimer = PauseableTimer()
     private var alarmTimer = PauseableTimer()
 
-    init(audioPlayer: AudioPlayerService, 
-         audioRecorder: AudioRecorderService, 
-         bgService: BackgroundService) {
-        self.audioPlayer = audioPlayer
-        self.audioRecorder = audioRecorder
-        self.bgService = bgService
+    init(audioService: AudioService) {
+        self.audioService = audioService
 
-        super.init()
-
-        self.audioPlayer.interruptionSubject.sink { [weak self] (event) in
+        self.audioService.interruptionSubject.sink { [weak self] (event) in
             self?.hanleAudioInterruption(with: event)
-        }.store(in: &subscribers)
-        
-        self.audioRecorder.interruptionSubject.sink { [weak self] (event) in
-            self?.hanleAudioInterruption(with: event)
-        }.store(in: &subscribers)
-        
-        self.bgService.alarmBackgroundTaskPublisher().sink { [weak self] in
-            self?.hanleAlarmBackgroundTask()
-        }.store(in: &subscribers)
-
-        NotificationCenter.default.publisher(for: UIApplication.didEnterBackgroundNotification).sink { (_) in
-            guard self.stateSubject.value != .idle else { return }
-            let request = BGAppRefreshTaskRequest(identifier: "com.sk.podushka.alarmTask")
-            request.earliestBeginDate = self.alarmDate
-            try? BGTaskScheduler.shared.submit(request)
-        }.store(in: &subscribers)
-        
-        NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification).sink { (_) in
-            if Date() > self.alarmDate {
-                self.audioRecorder.stop()
-                self.stateSubject.send(.idle)
-            }
         }.store(in: &subscribers)
     }
     
@@ -80,6 +51,9 @@ final class MainVM: NSObject, MainViewModel {
             
         // Start the entire flow from the beginning. 
         case .idle:
+            print("idle")
+            
+            audioService.startSession()
             scheduleAlarm()
 
             // Switch to the recording stage immediately if the sleep timer if off.
@@ -89,35 +63,38 @@ final class MainVM: NSObject, MainViewModel {
             }
             
             playingTimer.schedule(with: sleepTimerDuration) { [weak self] in
+                print("playingTimer")
                 guard let strongSelf = self else { return }
                 guard strongSelf.stateSubject.value == .playing else { return }
                 // The audio playing stage is completed. Switch to the Recording stage.
-                strongSelf.audioPlayer.stop()
+                strongSelf.audioService.stopPlaying()
                 strongSelf.switchToRecordingStage()
             }
-            audioPlayer.play(audio: .nature)
+            audioService.startRecording()
+            audioService.play(audio: .nature)
             stateSubject.send(.playing)
         
         // Pause playing.
         case .playing:
             playingTimer.pause()
-            audioPlayer.pause()
+            audioService.pausePlaying()
+            audioService.pauseRecording()
             stateSubject.send(.paused)
             
         // Resume playing or recording.
         case .paused:
-            if audioPlayer.isActive {
+            audioService.resumePlaying()
+            audioService.resumeRecording()
+            if audioService.isPlaying {
                 playingTimer.resume()
-                audioPlayer.resume()
                 stateSubject.send(.playing)
-            } else if audioRecorder.isActive {
-                audioRecorder.resume()
+            } else if audioService.isRecording {
                 stateSubject.send(.recording)
             }
             
         // Pause recording.
         case .recording:
-            audioRecorder.pause()
+            audioService.pauseRecording()
             stateSubject.send(.paused)
             
         // Do nothing, toggling during alarm state is forbidden.
@@ -127,7 +104,8 @@ final class MainVM: NSObject, MainViewModel {
     }
     
     func resetFlow() {
-        audioPlayer.stop()
+        audioService.stopPlaying()
+        audioService.stopSession()
         stateSubject.send(.idle)
     }
     
@@ -137,7 +115,6 @@ extension MainVM {
     
     private func scheduleAlarm() {
         let center = UNUserNotificationCenter.current()
-        center.delegate = self
         center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
             guard granted, error == nil else { return }
 
@@ -152,10 +129,19 @@ extension MainVM {
 
             center.add(request)
         }
+        
+        let timeInterval = alarmDate.timeIntervalSince(Date())
+        alarmTimer.schedule(with: timeInterval) { [weak self] in
+            print("alarmTimer")
+            guard let strongSelf = self else { return }
+            strongSelf.audioService.play(audio: .alarm)
+            strongSelf.stateSubject.send(.alarm)
+            strongSelf.audioService.stopRecording()
+        }
+
     }
     
     private func switchToRecordingStage() {
-        audioRecorder.start()
         stateSubject.send(.recording)
     }
     
@@ -164,20 +150,21 @@ extension MainVM {
         case .began:
             if stateSubject.value == .playing {
                 playingTimer.pause()
-                audioPlayer.pause()
+                audioService.pausePlaying()
+                audioService.pauseRecording()
             } else if stateSubject.value == .recording {
-                audioRecorder.pause()
+                audioService.pauseRecording()
                 stateSubject.send(.paused)
             }
             
         case .endedWithResume:
             if stateSubject.value == .paused {
-                if audioPlayer.isActive {
+                audioService.resumePlaying()
+                audioService.resumeRecording()
+                if audioService.isPlaying {
                     playingTimer.resume()
-                    audioPlayer.resume()
                     stateSubject.send(.playing)
-                } else if audioRecorder.isActive {
-                    audioRecorder.resume()
+                } else if audioService.isRecording {
                     stateSubject.send(.recording)
                 }
             }
@@ -185,21 +172,4 @@ extension MainVM {
         default: break
         }
     }
-    
-    private func hanleAlarmBackgroundTask() {
-        guard stateSubject.value != .idle else { return }
-        audioRecorder.stop()
-        stateSubject.send(.idle)
-    }
 }
-
-extension MainVM: UNUserNotificationCenterDelegate {
-    
-    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        // Alarm notification was triggered in the foreground.
-        audioRecorder.stop()
-        audioPlayer.play(audio: .alarm)
-        stateSubject.send(.alarm)
-    }
-}
-
