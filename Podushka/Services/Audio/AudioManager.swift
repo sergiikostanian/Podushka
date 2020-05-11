@@ -29,6 +29,7 @@ final class AudioManager: AudioService {
     
     private var playCommandTarget: Any?
     private var pauseCommandTarget: Any?
+    private var currentRecordingTitle: String?
 
     // MARK: - Session
     func startSession() {
@@ -71,20 +72,35 @@ final class AudioManager: AudioService {
     }
     
     // MARK: - Audio Recording
-    func startRecording() {
-        if recorder != nil {
-            stopRecording()
-        }
-        
+    func startDummyRecording() {
+        currentRecordingTitle = "\(Date()).m4a"
+
         if audioSession.recordPermission == .granted {
-            launchAudioRecorder()
+            launchAudioRecorder(with: currentRecordingTitle!)
             return
         }
         
         audioSession.requestRecordPermission() { [weak self] granted in
-            guard granted else { return }
+            guard let strongSelf = self, granted else { return }
+            guard let title = strongSelf.currentRecordingTitle else { return }
             DispatchQueue.main.async {
-                self?.launchAudioRecorder()
+                strongSelf.launchAudioRecorder(with: title)
+            }
+        }
+    }
+    
+    func startRecording() {
+        let title = currentRecordingTitle ?? "\(Date()).m4a"
+        
+        if audioSession.recordPermission == .granted {
+            launchAudioRecorder(with: title)
+            return
+        }
+        
+        audioSession.requestRecordPermission() { [weak self] granted in
+            guard let strongSelf = self, granted else { return }
+            DispatchQueue.main.async {
+                strongSelf.launchAudioRecorder(with: title)
             }
         }
     }
@@ -102,6 +118,7 @@ final class AudioManager: AudioService {
     func stopRecording() {
         recorder?.stop()
         recorder = nil
+        currentRecordingTitle = nil
     }
     
     func setRemoteCommandCenter(enabled: Bool) {
@@ -137,9 +154,9 @@ final class AudioManager: AudioService {
 // MARK: - Helpers
 extension AudioManager {
     
-    private func launchAudioRecorder() {
+    private func launchAudioRecorder(with title: String) {
         let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        let audioFilename = documentsDirectory.appendingPathComponent("\(Date()).m4a")
+        let audioFilename = documentsDirectory.appendingPathComponent(title)
         let settings = [
             AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
             AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue,

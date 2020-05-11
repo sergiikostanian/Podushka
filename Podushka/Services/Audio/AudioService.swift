@@ -37,6 +37,13 @@ protocol AudioService: AudioInterruptable {
     /// Stops playing current audio file.
     func stopPlaying()
     
+    /// This is a workaroud method to enable start recording in the background.
+    /// Since iOS 12.4 it is impossible to start recording while your app is in the background.
+    /// To fix this we can start dummy recording while in the foreground and then,
+    /// after starting the real recording by calling `startRecording()` we can overwrite dummy record.
+    /// For more details, read [this thread](https://forums.developer.apple.com/thread/120038).
+    func startDummyRecording()
+    
     /// Starts recording audio.
     func startRecording()
     /// Pauses current recording.
