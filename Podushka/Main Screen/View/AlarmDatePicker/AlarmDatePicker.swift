@@ -86,7 +86,7 @@ final class AlarmDatePicker: UIView {
     }
     
     @IBAction private func doneButtonTapped(_ sender: UIButton) {
-        dismiss(with: .done(datePicker.date))
+        dismiss(with: .done(datePicker.date.withoutSeconds))
     }
 }
 

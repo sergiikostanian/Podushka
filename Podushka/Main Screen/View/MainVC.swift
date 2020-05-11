@@ -32,7 +32,7 @@ final class MainVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let date = Date().advanced(by: 5 * 60)
+        let date = Date().advanced(by: 5 * 60).withoutSeconds
         updateAlarmDate(date)
         alarmDatePicker.setDate(date)
     }
@@ -74,7 +74,7 @@ extension MainVC {
 
         switch newState {
         case .idle:
-            let date = Date().advanced(by: 5 * 60)
+            let date = Date().advanced(by: 5 * 60).withoutSeconds
             updateAlarmDate(date)
             alarmDatePicker.setDate(date)
             playPauseButton.setTitle("Play", for: .normal)

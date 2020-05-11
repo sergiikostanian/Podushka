@@ -16,7 +16,7 @@ import UserNotifications
 final class MainVM: MainViewModel {
     
     var sleepTimerDuration: TimeInterval = 60
-    var alarmDate: Date = Date().advanced(by: 5 * 60)
+    var alarmDate: Date = Date().advanced(by: 5 * 60).withoutSeconds
     
     // MARK: Dependencies
     private let audioService: AudioService
@@ -61,8 +61,8 @@ final class MainVM: MainViewModel {
             }
             
             scheduleSleep()
-            audioService.startRecording()
             audioService.play(audio: .nature)
+            audioService.startRecording()
             stateSubject.send(.playing)
         
         // Pause playing.
@@ -125,9 +125,9 @@ extension MainVM {
         alarmTimer.schedule(with: timeInterval) { [weak self] in
             guard let strongSelf = self else { return }
             // The audio recording stage is completed. Switch to the alarm stage.
+            strongSelf.audioService.stopRecording()
             strongSelf.audioService.play(audio: .alarm)
             strongSelf.stateSubject.send(.alarm)
-            strongSelf.audioService.stopRecording()
         }
     }
     

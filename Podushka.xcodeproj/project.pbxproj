@@ -28,6 +28,7 @@
 		82D6D58024682932009EFF01 /* AudioInterruptable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82D6D57F24682932009EFF01 /* AudioInterruptable.swift */; };
 		82D6D58A2469058C009EFF01 /* AudioService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82D6D5892469058C009EFF01 /* AudioService.swift */; };
 		82D6D58C246905A2009EFF01 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82D6D58B246905A2009EFF01 /* AudioManager.swift */; };
+		82D6D58E24692397009EFF01 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82D6D58D24692397009EFF01 /* DateExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +67,7 @@
 		82D6D57F24682932009EFF01 /* AudioInterruptable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioInterruptable.swift; sourceTree = "<group>"; };
 		82D6D5892469058C009EFF01 /* AudioService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioService.swift; sourceTree = "<group>"; };
 		82D6D58B246905A2009EFF01 /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
+		82D6D58D24692397009EFF01 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,6 +154,7 @@
 				82D6D5562466A0C1009EFF01 /* UIViewExtension.swift */,
 				82D6D5732467203F009EFF01 /* PauseableTimer.swift */,
 				82D6D57524672A4B009EFF01 /* TimeFormatter.swift */,
+				82D6D58D24692397009EFF01 /* DateExtension.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -326,6 +329,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				82D6D55F2466C046009EFF01 /* DependencyContainer.swift in Sources */,
+				82D6D58E24692397009EFF01 /* DateExtension.swift in Sources */,
 				82D6D5682466C517009EFF01 /* MainVM.swift in Sources */,
 				82D6D58A2469058C009EFF01 /* AudioService.swift in Sources */,
 				82D6D5572466A0C1009EFF01 /* UIViewExtension.swift in Sources */,
