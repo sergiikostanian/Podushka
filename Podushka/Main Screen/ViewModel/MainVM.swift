@@ -56,6 +56,7 @@ final class MainVM: MainViewModel {
 
             // Switch to the recording stage immediately if the sleep timer if off.
             guard sleepTimerDuration > 0 else {
+                audioService.startRecording()
                 stateSubject.send(.recording)
                 break
             }
