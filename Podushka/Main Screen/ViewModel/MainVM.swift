@@ -149,8 +149,8 @@ extension MainVM {
                 audioService.pauseRecording()
             } else if stateSubject.value == .recording {
                 audioService.pauseRecording()
-                stateSubject.send(.paused)
             }
+            stateSubject.send(.paused)
             
         case .endedWithResume:
             if stateSubject.value == .paused {
